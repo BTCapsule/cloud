@@ -164,11 +164,11 @@ const customUrlParam = generateRandomNumber();
 
 
 app.use((req, res, next) => {
- //const iszside = req.path === '/zside/zside.html'; 
+ const uploads = req.path === '/uploads/uploads.html'; 
  //const isTestchainPage = req.path === '/testchain/testchain.html';
   const providedKey = req.query.key;
 
-  if (providedKey === customUrlParam.toString() //  || (iszside && providedKey === customUrlParam.toString())
+  if (providedKey === customUrlParam.toString() || (uploads && providedKey === customUrlParam.toString())
  // (isTestchainPage && providedKey === customUrlParam.toString())
 ) {
     next();
@@ -208,35 +208,35 @@ testchainApp.listen(3001, () => {
 
 
 
+*/
 
 
 
 
-
-app.get('/zside.html', (req, res) => {
-  const filePath = path.join(__dirname, 'zside.html');
+app.get('/uploads.html', (req, res) => {
+  const filePath = path.join(__dirname, 'uploads.html');
   console.log('Attempting to serve file:', filePath);
   res.sendFile(filePath);
 });
 
 
 // Proxy requests to /testchain to the testchain application
-app.use('/zside', createProxyMiddleware({ 
+app.use('/uploads', createProxyMiddleware({ 
   target: 'http://localhost:3002', 
   changeOrigin: true,
-  pathRewrite: {'^/zside/api' : ''}
+  pathRewrite: {'^/uploads/api' : ''}
 }));
 
 // Your existing route handlers...
 
 // Start the testchain application
-const zsideApp = require('./zside/zside');
-zsideApp.listen(3002, () => {
-  console.log('zside app listening on port 3002');
+const uploadsApp = require('./uploads/uploads');
+uploadsApp.listen(3002, () => {
+  console.log('uploads app listening on port 3002');
 });
 
 
-*/
+
 
 
 

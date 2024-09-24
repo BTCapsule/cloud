@@ -39,13 +39,73 @@
         input[type="file"] {
             display: none;
         }
+
+       #upload-status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #file-name {
+            margin-top: 10px;
+            font-style: italic;
+
+
+
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Upload Your Content</h1>
-        <label for="file-upload" class="upload-btn">Upload</label>
-        <input type="file" id="file-upload" name="file-upload">
+        <form id="upload-form" enctype="multipart/form-data">
+            <label for="file-upload" class="upload-btn">Choose File</label>
+            <input type="file" id="file-upload" name="file-upload">
+            <button type="submit" class="upload-btn">Upload</button>
+        </form>
+<div id="file-name"></div>
+        <div id="upload-status"></div>
     </div>
+
+
+
+<script>
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('File uploaded successfully!');
+          
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error uploading file.');
+        });
+    });
+
+        const fileInput = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.textContent = `Selected file: ${this.files[0].name}`;
+            } else {
+                fileNameDisplay.textContent = '';
+            }
+        });
+</script>
+
+
+
+
+
 </body>
 </html>
